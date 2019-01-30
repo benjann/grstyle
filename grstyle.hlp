@@ -1,0 +1,266 @@
+{smcl}
+{* 30jan2019}{...}
+{hi:help grstyle}{...}
+{right:{browse "http://repec.sowi.unibe.ch/stata/grstyle"}}
+{hline}
+
+{title:Title}
+
+{pstd}{hi:grstyle} {hline 2} Customize the overall look of graphs
+
+
+{marker syntax}{...}
+{title:Syntax}
+
+{p 8 15 2}
+    {cmd:grstyle init}
+    [ {it:newscheme}{cmd:,} {opt path(path)} {opt r:eplace} ]
+
+{p 8 15 2}
+    {cmd:grstyle} {it:{help scheme_entries:scheme entry}}
+
+{p 8 15 2}
+    {help grstyle_set:{bf:grstyle set} {it:subcmd ...}}
+
+{p 8 15 2}
+    {cmd:grstyle type}
+
+{p 8 15 2}
+    {cmd:grstyle clear} [{cmd:,} {cmd:erase}]
+
+
+{marker description}{...}
+{title:Description}
+
+{pstd}
+    {cmd:grstyle} allows you to customize the overall look of graphs from
+    within a do-file without having to fiddle around with external
+    {help scheme files}. The advantage of {cmd:grstyle} over manually editing a
+    scheme file is that everything needed to reproduce your graphs can be
+    included in a single do-file.
+
+{pstd}
+    {cmd:grstyle init} starts recording the custom style settings. Optionally, if
+    {it:newscheme} is provided, a new scheme file is created and stored in the
+    current working directory as "scheme-{it:newscheme}.scheme". {cmd:grstyle init}
+    uses the active graph scheme as the base scheme for the custom style
+    settings. The default scheme according to factory settings is
+    {helpb scheme s2:s2color}. Apply {helpb set scheme}
+    {it:{help schemes:schemename}} prior to running {cmd:grstyle init} if you
+    want to use a different scheme as the base scheme.
+
+{pstd}
+    After running {cmd:grstyle init}, use {cmd:grstyle} {it:scheme entry} to add a
+    custom style setting. Use {cmd:grstyle} {it:scheme entry} repeatedly to add
+    multiple settings. The syntax of {it:scheme entry} is described in
+    {help scheme_entries:scheme entries}.
+
+{pstd}
+    In addition, you can use {helpb grstyle set} to add sets of custom
+    settings. {helpb grstyle set} provides a number of precoded collections of
+    scheme entries. Furthermore, it provides tools to automize the generation
+    of certain types of scheme entries (e.g. colors or sizes).
+
+{pstd}
+    {cmd:grstyle type} views the custom settings (i.e., types the contents of the
+    custom scheme file).
+
+{pstd}
+    {cmd:grstyle clear} deactivates the custom style settings. {cmd:grstyle clear} is
+    only needed if you want to restore the original graph settings within the same
+    Stata session; changes made by {cmd:grstyle} are only temporary and
+    restarting Stata will remove the custom settings even if
+    {cmd:grstyle clear} has not been specified. Furthermore, {cmd:grstyle init}
+    automatically runs {cmd:grstyle clear} before initializing new settings.
+
+{pstd}
+    Some features of {cmd:grstyle} require the {cmd:palettes} package (providing
+    commands {helpb colorpalette}, {helpb colorpalette9}, {helpb symbolpalette},
+    and {helpb linepalette}) to be installed on the system; type
+    {stata ssc install palettes} to install the
+    package. In Stata 14.2 or newer, you will also need to install
+    the {helpb colrspace} package; type {stata ssc install colrspace}.
+
+
+{marker options}{...}
+{title:Options for grstyle init}
+
+{phang}
+    {opt path(path)} specifies a path (absolute or relative) for the scheme
+    file cerated by {cmd:grstyle init} {it:newscheme}. Option {cmd:path()} is only
+    allowed if {it:newscheme} is specified. The default is to store the scheme
+    file in the current working directory. Note that the graphs using the
+    scheme will only display correctly if the scheme file is stored in a
+    location where it is found by Stata (see {helpb adopath}).
+
+{phang}
+    {opt replace} allows overwriting an existing file. {cmd:replace} is only
+    allowed if {it:newscheme} is specified.
+
+
+{title:Options for grstyle clear}
+
+{phang}
+    {opt erase} causes the scheme file created by {cmd:grstyle} to be erased
+    from disk. The default is not to erase the scheme file.
+
+
+{marker examples}{...}
+{title:Examples}
+
+{pstd}
+    Stata's default graph size is 5.5 by 4 inches. If you want all your graphs
+    to be, say, 5 by 5 inches, you could change these defaults using {cmd:grstyle}
+    as follows instead of adding options {cmd:ysize(5)} and
+    {cmd:xsize(5)} to each graph command:
+
+        {com}. {stata grstyle init}
+        . {stata grstyle graphsize x 5}
+        . {stata grstyle graphsize y 5}
+        . {stata sysuse auto}
+        . {stata scatter price weight}
+        . {stata scatter price mpg}
+        . {stata grstyle clear}{txt}
+
+{pstd}
+    Here are a number of other useful style settings, starting from the
+    {cmd:s2color} scheme:
+
+        {com}. {stata set scheme s2color}
+        . {stata grstyle init}{txt}
+
+{pstd}
+    - get rid of background shading
+
+        {com}. {stata grstyle color background white}{txt}
+
+{pstd}
+    - use horizontal labels on vertical axis
+
+        {com}. {stata grstyle anglestyle vertical_tick horizontal}{txt}
+
+{pstd}
+    - add some space between tick labels and axis titles
+
+        {com}. {stata grstyle gsize axis_title_gap tiny}{txt}
+
+{pstd}
+    - also draw grid lines on horizontal axis
+
+        {com}. {stata grstyle yesno draw_major_hgrid yes}{txt}
+
+{pstd}
+    - always include minimum and maximum grid lines
+
+        {com}. {stata grstyle yesno grid_draw_min yes}
+        . {stata grstyle yesno grid_draw_max yes}{txt}
+
+{pstd}
+    - change color, width, and pattern of grid lines
+
+        {com}. {stata grstyle color major_grid gs8}
+        . {stata grstyle linewidth major_grid thin}
+        . {stata grstyle linepattern major_grid dot}{txt}
+
+{pstd}
+    - place legend on the right and remove the frame
+
+        {com}. {stata grstyle clockdir legend_position 4}
+        . {stata grstyle numstyle legend_cols 1}
+        . {stata grstyle linestyle legend none}{txt}
+
+{pstd}
+    - thicker lines in line plots
+
+        {com}. {stata grstyle linewidth plineplot medthick}{txt}
+
+{pstd}
+    - transparent markers (for p1 and p2) (not supported in Stata 14 or below)
+
+        {com}. {stata grstyle color p1markline navy%0}
+        . {stata grstyle color p1markfill navy%50}
+        . {stata grstyle color p2markline maroon%0}
+        . {stata grstyle color p2markfill maroon%50}{txt}
+
+{pstd}
+    - transparent confidence intervals (not supported in Stata 14 or below)
+
+        {com}. {stata grstyle color ci_area gs12%50}
+        . {stata grstyle color ci_arealine gs12%0}{txt}
+
+{pstd}
+    - now draw some graphs:
+
+        {com}. {stata sysuse auto}
+{p 8 12 2}
+        . {stata two (scatter price weight if foreign==0) (scatter price weight if foreign==1) (lfitci price weight if foreign==0, clstyle(p1line)) (lfitci price weight if foreign==1, clstyle(p2line)), legend(order(1 "domestic" 2 "foreign"))}
+{p_end}
+{p 8 12 2}
+        . {stata two (scatter price mpg if foreign==0) (scatter price mpg if foreign==1) (lfitci price mpg if foreign==0, clstyle(p1line)) (lfitci price mpg if foreign==1, clstyle(p2line)), legend(order(1 "domestic" 2 "foreign"))}{txt}
+{txt}
+
+{pstd}
+    - revert back to {cmd:s2color} style
+
+        {com}. {stata grstyle clear}{txt}
+
+{pstd}
+    Most of the above can also be achieved with less typing using {helpb grstyle set}.
+
+
+{marker techremarks}{...}
+{title:Technical remarks}
+
+{pstd}
+    Unless {it:newscheme} is provided, {cmd:grstyle init} creates a scheme called
+    {cmd:_GRSTYLE_} and stores it in file "scheme-_GRSTYLE_.scheme" in the
+    {cmd:PERSONAL} ado-file directory (see help {helpb sysdir}). That is,
+    unless a custom scheme name is specified, {cmd:grstyle} will always use the
+    same file to store the style settings. Be aware of this limitation if you
+    use {cmd:grstyle} in parallel Stata sessions.
+
+{pstd}
+    {cmd:grstyle} maintains global macro {cmd:GRSTYLE_FN} containing the
+    path and name of the scheme file used to store the custom style settings,
+    global macro {cmd:GRSTYLE_SN} containing the corresponding scheme name,
+    and global macro {cmd:GRSTYLE_SN0} containing the name of the
+    scheme that was active when initializing {cmd:grstyle}. Furthermore,
+    depending on context, global macro {cmd:GRSTYLE_RSIZE} containing information
+    on the reference size for size calculation will be set. {cmd:grstyle clear}
+    removes these global macros.
+
+
+{marker author}{...}
+{title:Author}
+
+{pstd}
+    Ben Jann, University of Bern, ben.jann@soz.unibe.ch
+
+{pstd}
+    Thanks for citing this software as
+
+{pmore}
+    Jann, B. (2018a). {browse "https://www.stata-journal.com/article.html?article=gr0073":Customizing Stata graphs made easy (part 1)}. The
+    Stata Journal 18(3): 491-502.
+    {p_end}
+{pmore}
+    Jann, B. (2018b). {browse "https://www.stata-journal.com/article.html?article=gr0073_1":Customizing Stata graphs made easy (part 2)}. The
+    Stata Journal 18(4): 786–802.
+    {p_end}
+
+{pstd}
+    or
+
+{pmore}
+    Jann, B. (2017). grstyle: Stata module to customize the overall look of
+    graphs. Available from
+    {browse "http://ideas.repec.org/c/boc/bocode/s458414.html"}.
+
+
+{marker alsosee}{...}
+{title:Also see}
+
+{psee}
+    Online:  help for {helpb grstyle set},
+    {helpb graph}, {helpb schemes}, {help scheme files}, {help scheme entries}
+

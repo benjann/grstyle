@@ -1,0 +1,1194 @@
+{smcl}
+{* 18jun2018}{...}
+{hi:help grstyle set}{...}
+{right:{browse "http://repec.sowi.unibe.ch/stata/grstyle"}}
+{hline}
+
+{title:Title}
+
+{pstd}{hi:grstyle set} {hline 2} Utility command to generate graph settings for {helpb grstyle}
+
+
+{marker syntax}{...}
+{title:Syntax}
+
+{p 8 15 2}
+    {cmd:grstyle set} {it:{help grstyle_set##subcmd:subcmd ...}}
+
+{synoptset 32 tabbed}{...}
+{marker subcmd}{synopthdr:subcmd}
+{synoptline}
+{syntab:Background and coordinate system}
+{synopt:{help grstyle_set##plain:{bf:plain} [{bf:,} {it:options}]}}plain overall look (no background shading etc.)
+    {p_end}
+{synopt:{help grstyle_set##mesh:{bf:mesh} [{bf:,} {it:options}]}}plain look; mesh of grid lines without axes
+    {p_end}
+{synopt:{help grstyle_set##imesh:{bf:imesh} [{bf:,} {it:options}]}}plain look; inverted mesh (similar to ggplot2 in R)
+    {p_end}
+{synopt:{helpb grstyle_set##horizontal:{ul:hor}izontal}}horizontal tick labels on y axis
+    {p_end}
+{synopt:{helpb grstyle_set##compact:{ul:com}pact}}smaller fonts, margin, and symbols
+    {p_end}
+{synopt:{helpb grstyle_set##grid:grid [{bf:,} {it:options}]}}turn all grid lines on
+    {p_end}
+{synopt:{helpb grstyle_set##nogrid:nogrid}}turn grid lines off
+    {p_end}
+{synopt:{helpb grstyle_set##noextend:{ul:noex}tend}}do not extend axis lines
+    {p_end}
+
+{syntab:Legend}
+{synopt:{help grstyle_set##legend:{bf:{ul:leg}end} [#] [{bf:,} {it:options}]}}placement and look of legend
+    {p_end}
+
+{syntab:CIs}
+{synopt:{help grstyle_set##ci:{bf:ci} [{it:colors}] [{bf:,} {it:options}]}}transparent confidence intervals
+    {p_end}
+
+{syntab:Colors, symbols, line patterns}
+{synopt:{help grstyle_set##color:{bf:{ul:c}olor} [{it:palette}] [{bf:,} {it:options}]}}assign colors
+    {p_end}
+{synopt:{help grstyle_set##intensity:{bf:{ul:inten}sity} [{it:intlist}] [{bf:,} {it:options}]}}assign color intensities
+    {p_end}
+{synopt:{help grstyle_set##symbol:{bf:{ul:s}ymbol} [{it:palette}] [{bf:,} {it:options}]}}assign markers symbols
+    {p_end}
+{synopt:{help grstyle_set##lpattern:{bf:{ul:lp}attern} [{it:palette}] [{bf:,} {it:options}]}}assign line patterns
+    {p_end}
+
+{syntab:Sizes}
+{synopt:{help grstyle_set##graphsize:{bf:graphsize} [{it:height} [{it:width}]]}}set graph size
+    {p_end}
+{synopt:{help grstyle_set##size:{bf:size} {it:sizelist} [{bf:,} {it:options}]}}set text and gap sizes
+    {p_end}
+{synopt:{help grstyle_set##symbolsize:{bf:symbolsize} {it:sizelist} [{bf:,} {it:options}]}}set symbol sizes
+    {p_end}
+{synopt:{help grstyle_set##linewidth:{bf:linewidth} {it:sizelist} [{bf:,} {it:options}]}}set line widths
+    {p_end}
+{synopt:{help grstyle_set##margin:{bf:margin} {it:sizelist} [{bf:,} {it:options}]}}set margin widths
+    {p_end}
+
+{syntab:Custom}
+{synopt:{help grstyle_set##myname:{it:myname ...}}}custom subcommand provided by program {cmd:grstyle_set_}{it:myname}; see {help grstyle_set##myname:below}{p_end}
+{synoptline}
+
+
+{marker description}{...}
+{title:Description}
+
+{pstd}
+    {cmd:grstyle set} adds precoded collections of {help scheme entries} to the
+    style settings maintained by {helpb grstyle} and provides tools for automizing
+    the generation of scheme entries for certain attributes such as colors or sizes.
+
+
+{marker subcommands}{...}
+{title:Subcommands}
+
+{marker plain}{...}
+{dlgtab:plain}
+
+{p 8 15 2}
+    {cmd:grstyle set} {opt plain} [, {opt hor:izontal} {opt com:pact}
+        [{cmd:{ul:no}}]{opt g:rid} {opt m:inor} {opt dot:ted} {opt noex:tend} 
+        {opt box} ]
+
+{pstd}
+    Apply a plain overall look: white background; no shading of by-labels and
+    matrix labels; black title; grid lines in gray. Options are as follows:
+
+{phang}
+    {opt horizontal} sets the orientation of tick labels on the y axis to horizontal;
+    same as {helpb grstyle_set##horizontal:grstyle set horizontal}.
+
+{phang}
+    {opt compact} reduces the symbols size, some font sizes, and the graph margin;
+    same as {helpb grstyle_set##compact:grstyle set compact}.
+
+{phang}
+    {opt grid} turns all grid lines on (horizontal, vertical, minimum, maximum);
+    same as {helpb grstyle_set##grid:grstyle set grid}.
+
+{phang}
+    {opt nogrid} turns grid lines off; same as {helpb grstyle_set##nogrid:grstyle set nogrid}.
+
+{phang}
+    {opt minor} adds a minor grid (one minor grid line between each pair of 
+    major grid lines). {cmd:minor} only has an effect if {cmd:grid} is specified.
+
+{phang}
+    {opt dotted} requests dotted grid lines.
+
+{phang}
+    {opt noextend} draws axis lines only to the smallest and largest
+    tick marks; same as {helpb grstyle_set##noextend:grstyle set noextend}.
+
+{phang}
+    {opt box} draws a frame around the plot region. The default is to omit the frame.
+
+{pstd}
+    Examples:
+
+        . {stata grstyle init}
+        . {stata grstyle set plain, horizontal grid}
+        . {stata sysuse auto, clear}
+        . {stata scatter price mpg, by(foreign)}
+
+        . {stata grstyle init}
+        . {stata grstyle set plain, horizontal grid dotted}
+        . {stata scatter price mpg}
+
+        . {stata grstyle init}
+        . {stata grstyle set plain, nogrid noextend}
+        . {stata scatter price mpg}
+
+{marker mesh}{...}
+{dlgtab:mesh}
+
+{p 8 15 2}
+    {cmd:grstyle set} {opt mesh} [, {opt m:inor} {opt hor:izontal} {opt com:pact} ]
+
+{pstd}
+    Similar to {helpb grstyle_set##plain:plain}, but the coordinate plane is a
+    mesh of grid lines; axis lines and ticks are omitted; grid lines and tick labels are in
+    gray. Options are as follows:
+
+{phang}
+    {opt minor} adds a minor grid (one minor grid line between each pair of 
+    major grid lines).
+
+{phang}
+    {opt horizontal} sets the orientation of tick labels on the y axis to horizontal;
+    same as {helpb grstyle_set##horizontal:grstyle set horizontal}.
+
+{phang}
+    {opt compact} reduces the symbols size, some font sizes, and the graph margin;
+    same as {helpb grstyle_set##compact:grstyle set compact}.
+
+{pstd}
+    Examples:
+
+        . {stata grstyle init}
+        . {stata grstyle set mesh, horizontal compact}
+        . {stata sysuse auto, clear}
+        . {stata scatter price mpg}
+
+        . {stata grstyle init}
+        . {stata grstyle set mesh, nominor horizontal}
+        . {stata scatter price mpg}
+
+{marker imesh}{...}
+{dlgtab:imesh}
+
+{p 8 15 2}
+    {cmd:grstyle set} {opt imesh} [, {opt m:inor} {opt hor:izontal} {opt com:pact} ]
+
+{pstd}
+    Similar to {helpb grstyle_set##plain:plain}, but the coordinate plane is an
+    inverted mesh: gray background with white grid lines; axis lines are
+    omitted. The look is similar to ggplot2 in R. Options are as follows:
+
+{phang}
+    {opt minor} adds a minor grid (one minor grid line between each pair of 
+    major grid ines).
+    
+{phang}
+    {opt horizontal} sets the orientation of tick labels on the y axis to horizontal;
+    same as {helpb grstyle_set##horizontal:grstyle set horizontal}.
+
+{phang}
+    {opt compact} reduces the symbols size, some font sizes, and the graph margin;
+    same as {helpb grstyle_set##compact:grstyle set compact}.
+
+{pstd}
+    Examples:
+
+        . {stata grstyle init}
+        . {stata grstyle set imesh, horizontal compact}
+        . {stata sysuse auto, clear}
+        . {stata scatter price mpg}
+
+        . {stata grstyle init}
+        . {stata grstyle set imesh, nominor horizontal}
+        . {stata scatter price mpg}
+
+{marker horizontal}{...}
+{dlgtab:horizontal}
+
+{p 8 15 2}
+    {cmd:grstyle set} {opt hor:izontal}
+
+{pstd}
+    Set the orientation of tick labels on the y axis to horizontal. Example:
+
+        . {stata grstyle init}
+        . {stata grstyle set horizontal}
+        . {stata sysuse auto, clear}
+        . {stata scatter price mpg}
+
+{marker compact}{...}
+{dlgtab:compact}
+
+{p 8 15 2}
+    {cmd:grstyle set} {opt com:pact}
+
+{pstd}
+    Reduce the symbols size, some font sizes, and the graph margin. Example:
+
+        . {stata grstyle init}
+        . {stata grstyle set compact}
+        . {stata sysuse auto, clear}
+        . {stata scatter price mpg}
+
+{marker grid}{...}
+{dlgtab:grid}
+
+{p 8 15 2}
+    {cmd:grstyle set} {opt grid} [, {opt m:inor} ]
+
+{pstd}
+    Turn all grid lines on (horizontal, vertical, minimum, maximum). Option 
+    {opt minor} adds an additional minor grid (one minor grid line between each pair of 
+    major grid lines). Example:
+
+        . {stata grstyle init}
+        . {stata grstyle set grid}
+        . {stata sysuse auto, clear}
+        . {stata scatter price mpg}
+
+{marker nogrid}{...}
+{dlgtab:nogrid}
+
+{p 8 15 2}
+    {cmd:grstyle set} {opt nogrid}
+
+{pstd}
+    Turn grid lines off. Example:
+
+        . {stata grstyle init}
+        . {stata grstyle set nogrid}
+        . {stata sysuse auto, clear}
+        . {stata scatter price mpg}
+
+{marker noextend}{...}
+{dlgtab:noextend}
+
+{p 8 15 2}
+    {cmd:grstyle set} {opt noex:tend}
+
+{pstd}
+    Draw axis lines only to the smallest and largest tick marks (i.e. do not
+    extend axis lines to the bounding box of the plot region). Example:
+
+        . {stata grstyle init}
+        . {stata grstyle set noextend}
+        . {stata sysuse auto, clear}
+        . {stata scatter price mpg}
+
+{marker legend}{...}
+{dlgtab:legend}
+
+{p 8 15 2}
+    {cmd:grstyle set} {opt leg:end} [{it:{help clockposstyle}}] [, {opt nobox}
+    {opt stack:ed} {opt in:side} {opth kl:ength(textsizestyle)} ]
+
+{pstd}
+    Determine placement and formatting of legend. {it:{help clockposstyle}}
+    sets the position of the legend; default is 6 (at the bottom). For example,
+    type {cmd:grstyle set legend 4} to place the legend at the lower right side
+    of the plot. If the legend is placed at the side ({it:clockposstyle}
+    between 2 and 4 or between 7 and 9), the number of legend columns will be
+    restricted to 1. Options are as follows:
+
+{phang}
+    {cmd:nobox} removes the box around the legend (including background color).
+
+{phang}
+    {cmd:stacked} stacks keys and labels (and makes some adjustments
+    to the gaps between keys).
+
+{phang}
+    {cmd:inside} places the legend inside the plot region.
+
+{phang}
+    {opth klength(textsizestyle)} changes the length of legend keys. The default
+    is {cmd:klength(huge)}. This is considerably shorter than the factory setting,
+    which is equivalent to {cmd:klength(13)}.
+
+{pstd}
+    Examples:
+
+        . {stata grstyle init}
+        . {stata grstyle set legend 2, inside}
+        . {stata sysuse auto, clear}
+        . {stata two (scatter price mpg if foreign) (scatter price mpg if !foreign)}
+
+        . {stata grstyle init}
+        . {stata grstyle set imesh, horizontal compact}
+        . {stata grstyle set legend 4, nobox}
+        . {stata two (scatter price mpg if foreign) (scatter price mpg if !foreign)}
+
+{marker ci}{...}
+{dlgtab:ci}
+
+{p 8 15 2}
+    {cmd:grstyle set} {opt ci} [{it:colors}]
+    [, {opth op:acity(numlist)} {help colorpalette##opts:{it:palette_options}} ]
+
+{pstd}
+    Make shading of confidence intervals transparent (Stata 15 required).
+    {it:colors} is a list of colors as described in
+    {help grstyle_set##colorspec:Specifying colors} below or a
+    {help colorpalette##palette:color palette} provided by
+    {helpb colorpalette}. If one
+    color is specified, only {cmd:ci} is set; if more than one color is
+    specified, {cmd:ci} and {cmd:ci2} are set (using the first two
+    colors). If no colors are specified, {cmd:ci} is set to {cmd:gs12} and
+    {cmd:ci2} is set to {cmd:ltkhaki} (same as in the {helpb scheme s2:s2color}
+    scheme). Options are as follows:
+
+{phang}
+    {opth opacity(numlist)} sets the level of opacity (0: fully transparent,
+    100: fully opaque). The default is {cmd:opacity(50)}. Specify two values if
+    you want to use different opacity levels for {cmd:ci} and {cmd:ci2}.
+
+{phang}
+    {it:palette_options} are palette options such as {cmd:n()} to set the palette size,
+    {cmd:select()} to select elements from a palette, {cmd:reverse} to use
+    the palette in reverse order, or {cmd:intensity()} to apply color
+    intensity adjustment. See {helpb colorpalette##opts:colorpalette}
+    for details.
+
+{pstd}
+    Example:
+
+        . {stata grstyle init}
+        . {stata grstyle set ci} {it:/* requires Stata 15 */}
+        . {stata sysuse auto, clear}
+{p 8 10 2}
+        . {stata two (scatter price length) (lpolyci price length if foreign==0) (lpolyci price length if foreign==1, astyle(ci2)), legend(off)}
+{p_end}
+
+        . {stata grstyle init}
+        . {stata grstyle set ci burd, select(11 13)} {it:/* requires Stata 15 */}
+{p 8 10 2}
+        . {stata two (scatter price length) (lpolyci price length if foreign==0) (lpolyci price length if foreign==1, astyle(ci2)), legend(off)}
+{p_end}
+
+{marker color}{...}
+{dlgtab:color}
+
+{p 8 15 2}
+    {cmd:grstyle set} {opt c:olor} [{it:argument}]
+        [,  {opt p:lots(numlist)}
+            {help colorpalette##opts:{it:palette_options}} ]
+        [ {cmd::} {it:elements} ]
+
+{pstd}
+    where {it:argument} is
+
+{p 8 15 2}
+    {help colorpalette##palette:{it:palette}}
+    [[, {help colorpalette##opts:{it:palette_options}}] / 
+    [ {help colorpalette##palette:{it:palette}} 
+    [, {help colorpalette##opts:{it:palette_options}}] / ... ]]
+
+{pstd}
+    Assign colors (using the {cmd:color} scheme entry attribute). {it:palette} is a
+    {help colorpalette##palette:color palette} provided by
+    {helpb colorpalette} (or by {helpb colorpalette9} if using a Stata version older than 14.2) 
+    or list of colors as described in
+    {help grstyle_set##colorspec:Specifying colors} below. The
+    default palette uses the same colors as in Stata's
+    {helpb scheme s2:s2color} scheme. Options are as follows:
+
+{phang}
+    {opt plots(numlist)} specifies the plot numbers for
+    {help grstyle_set##numbered:numbered elements}.
+
+{phang}
+    {it:palette_options} are palette options such as {cmd:n()} to set the palette size,
+    {cmd:select()} to select elements from a palette, {cmd:reverse} to use
+    the palette in reverse order, {cmd:intensity()} to apply color intensity adjustment,
+    or {cmd:opacity()} to set opacity. See {helpb colorpalette##opts:colorpalette}
+    for details.
+
+{pstd}
+    {it:elements} is a space-separated list of scheme entry elements to be
+    set (see {help scheme entries}). The default is {cmd:p#}. Some possible 
+    elements are:
+
+{p2colset 11 30 32 2}{...}
+{p2coldent:{help grstyle_set##numbered:Numbered elements}}{p_end}
+{p2col:{cmd:p#}}default plot colors{p_end}
+{p2col:{cmd:p#markfill}}marker fill colors{p_end}
+{p2col:{cmd:p#markline}}marker outline colors{p_end}
+{p2col:{cmd:p#label}}marker label colors{p_end}
+{p2col:{cmd:p#lineplot}}line colors for line plots{p_end}
+{p2col:{cmd:p#line}}line colors for connected-line plots{p_end}
+{p2col:{cmd:p#area}}fill colors for area plots{p_end}
+{p2col:{cmd:p#arealine}}outline colors for area plots{p_end}
+{p2col:{cmd:p#bar}}fill colors for bar plots{p_end}
+{p2col:{cmd:p#barline}}outline colors for bar plots{p_end}
+{p2col:{cmd:p#box}}fill colors for box plots{p_end}
+{p2col:{cmd:p#boxline}}outline/whisker colors for box plots{p_end}
+{p2col:{cmd:p#boxmarkfill}}marker fill colors for box plots{p_end}
+{p2col:{cmd:p#boxmarkline}}marker outline colors for box plots{p_end}
+{p2col:{cmd:p#boxlabel}}marker label colors for box plots{p_end}
+{p2col:{cmd:p#dotmarkfill}}fill colors for dot plots{p_end}
+{p2col:{cmd:p#dotmarkline}}outline colors for dot plots{p_end}
+{p2col:{cmd:p#pie}}slice colors for pie plots{p_end}
+
+{p2coldent:Other plot elements}{p_end}
+{p2col:{cmd:histogram}}histogram-bar fill color{p_end}
+{p2col:{cmd:histogram_line}}histogram-bar outline color{p_end}
+{p2col:{cmd:sunflower}}{helpb sunflower} marker color{p_end}
+{p2col:{cmd:sunflowerlb}}light {helpb sunflower} background color{p_end}
+{p2col:{cmd:sunflowerdb}}dark {helpb sunflower} background color{p_end}
+{p2col:{cmd:sunflowerlf}}light {helpb sunflower} line color{p_end}
+{p2col:{cmd:sunflowerdf}}dark {helpb sunflower} line color{p_end}
+{p2col:{cmd:matrix}}marker fill color for {helpb graph matrix}{p_end}
+{p2col:{cmd:matrixmarkline}}marker outline color for {helpb graph matrix}{p_end}
+{p2col:{cmd:contour_begin}}starting color for {helpb contour} plots{p_end}
+{p2col:{cmd:contour_end}}ending color for {helpb contour} plots{p_end}
+{p2col:{cmd:ci_area}}fill color for {cmd:ci}{p_end}
+{p2col:{cmd:ci_arealine}}outline color for {cmd:ci}{p_end}
+{p2col:{cmd:ci2_area}}fill color for {cmd:ci2}{p_end}
+{p2col:{cmd:ci2_arealine}}outline color for {cmd:ci2}{p_end}
+{p2col:{cmd:refline}}reference-line color{p_end}
+{p2col:{cmd:refmarker}}reference-marker fill color{p_end}
+{p2col:{cmd:refmarkline}}reference-marker outline color{p_end}
+
+{p2coldent:General elements}{p_end}
+{p2col:{cmd:background}}background color{p_end}
+{p2col:{cmd:plotregion}}plot region fill color{p_end}
+{p2col:{cmd:plotregion_line}}plot region outline color{p_end}
+{p2col:{cmd:major_grid}}color for grid lines{p_end}
+{p2col:{cmd:legend}}legend fill color{p_end}
+{p2col:{cmd:legend_line}}legend outline color{p_end}
+{p2col:{cmd:xyline}}added line color{p_end}
+
+{pstd}
+    Examples:
+
+        . {stata grstyle init}
+        . {stata grstyle set legend 2, nobox}
+        . {stata grstyle set color economist}
+        . {stata sysuse nlsw88, clear}
+        . {stata graph bar wage if occ<9, over(occ) asyvars over(union)}
+
+        . {stata grstyle set color ptol, rainbow n(8) reverse}
+        . {stata graph bar wage if occ<9, over(occ) asyvars over(union)}
+
+        . {stata grstyle set color Greens, n(8)}
+        . {stata graph bar wage if occ<9, over(occ) asyvars over(union)}
+
+        . // Transparent markers without outline (using default palette):
+        . {stata grstyle init}
+        . {stata "grstyle set color, opacity(60): p#markfill"}
+        . {stata "grstyle set color, opacity(0): p#markline"}
+        . {stata sysuse auto, clear}
+        . {stata two (scatter price length if foreign) (scatter price length if !foreign)}
+
+        . // Layout and colors similar to ggplot2:
+        . {stata grstyle init}
+        . {stata grstyle set imesh, horizontal compact}
+        . {stata grstyle set legend 4, nobox}
+        . {stata grstyle set color hue, n(5)}
+        . {stata sysuse auto, clear}
+        . {stata separate price, by(rep) shortlabel}
+        . {stata scatter price? weight, ytitle(Price)}
+
+{marker intensity}{...}
+{dlgtab:intensity}
+
+{p 8 15 2}
+    {cmd:grstyle set} {opt inten:sity} [{it:intlist}]
+        [,  {opt p:lots(numlist)} ]
+        [ {cmd::} {it:elements} ]
+
+{pstd}
+    Assign color intensities (using the {cmd:intensity} scheme entry
+    attribute). {it:intlist} is a space-separated list of intensity
+    specifications according to {it:{help intensitystyle}}. The default is
+    {cmd:100}. Options are as follows:
+
+{phang}
+    {opt plots(numlist)} specifies the plot numbers for
+    {help grstyle_set##numbered:numbered elements}.
+
+{pstd}
+    {it:elements} is a space-separated list of scheme entry elements to be
+    set (see {help scheme entries}). The default is {cmd:p} if {it:intlist}
+    only contains a single element and {cmd:plots()} is omitted. Otherwise,
+    the default is {cmd:p#}. Some possible elements are:
+
+{p2colset 11 30 32 2}{...}
+{p2coldent:{help grstyle_set##numbered:Numbered elements}}{p_end}
+{p2col:{cmd:p#}}fill intensities for bars and areas in {helpb twoway} graphs{p_end}
+{p2col:{cmd:p#area}}fill intensities for areas in {helpb twoway} graphs{p_end}
+{p2col:{cmd:p#bar}}fill intensities for bars in {helpb twoway} graphs{p_end}
+
+{p2coldent:Other elements}{p_end}
+{p2col:{cmd:bar}}fill intensity for {helpb graph bar}{p_end}
+{p2col:{cmd:bar_line}}outline intensity for {helpb graph bar}{p_end}
+{p2col:{cmd:box}}fill intensity for {helpb graph box}{p_end}
+{p2col:{cmd:box_line}}outline intensity for {helpb graph box}{p_end}
+{p2col:{cmd:pie}}fill intensity for {helpb graph pie}{p_end}
+{p2col:{cmd:histogram}}fill intensity for histograms{p_end}
+{p2col:{cmd:sunflower}}fill intensity for {helpb sunflower} plots{p_end}
+{p2col:{cmd:ci_area}}fill intensity for {cmd:ci} and {cmd:ci2}{p_end}
+
+{pstd}
+    Example:
+
+        . {stata grstyle init}
+        . {stata "grstyle set inten 20: bar"}
+        . {stata sysuse citytemp, clear}
+        . {stata graph bar (mean) tempjuly tempjan, over(region) bargap(-30)}
+
+{marker symbol}{...}
+{dlgtab:symbol}
+
+{p 8 15 2}
+    {cmd:grstyle set} {opt s:ymbol} [{it:palette}]
+        [,  {opt p:lots(numlist)}
+            {help symbolpalette##opts:{it:palette_options}} ]
+        [ {cmd::} {it:elements} ]
+
+{pstd}
+    Assign marker symbols (using the {cmd:symbol} scheme entry attribute). {it:palette} is a
+    {help symbolpalette##palette:symbol palette} provided by {helpb symbolpalette}
+    or a list of symbols according to {it:{help symbolstyle}}. The default
+    palette uses the same symbols as official Stata's monochrome schemes.
+    Options are as follows:
+
+{phang}
+    {opt plots(numlist)} specifies the plot numbers for
+    {help grstyle_set##numbered:numbered elements}.
+
+{phang}
+    {it:palette_options} are palette options such as {cmd:n()} to set the palette size,
+    {cmd:select()} to select elements from a palette, or {cmd:reverse} to use
+    the palette in reverse order. See {helpb symbolpalette##opts:symbolpalette}
+    for details.
+
+{pstd}
+    {it:elements} is a space-separated list of scheme entry elements to be
+    set (see {help scheme entries}). The default is {cmd:p} if {it:palette}
+    only contains a single element and {cmd:plots()} is omitted. Otherwise,
+    the default is {cmd:p#}. Some possible elements are:
+
+{p2colset 11 30 32 2}{...}
+{p2coldent:{help grstyle_set##numbered:Numbered elements}}{p_end}
+{p2col:{cmd:p#}}marker symbols for all plot types; the default{p_end}
+{p2col:{cmd:p#box}}symbol of outside value markers for box plots{p_end}
+{p2col:{cmd:p#dot}}marker symbols for dot plots{p_end}
+
+{p2coldent:Other elements}{p_end}
+{p2col:{cmd:matrix}}marker symbol for {helpb graph matrix}{p_end}
+{p2col:{cmd:sunflower}}marker symbol for {helpb sunflower}{p_end}
+{p2col:{cmd:refmarker}}reference-marker symbol{p_end}
+
+{pstd}
+    Example:
+
+        . {stata grstyle init}
+        . {stata grstyle set symbol tufte}
+        . {stata sysuse auto, clear}
+        . {stata separate price, by(rep) shortlabel}
+        . {stata scatter price? weight, ytitle(Price)}
+
+{pstd}
+    Since Stata 15 it is possible to specify angles for marker
+    symbols. Corresponding scheme entries can be constructed as
+    {cmd:anglestyle p}{it:#}{cmd:symbol} {it:{help anglestyle}}. Example:
+
+        . {stata grstyle init}
+        . {stata grstyle set symbol T T}
+        . {stata grstyle anglestyle p2symbol 180}
+        . {stata sysuse auto, clear}
+        . {stata separate price, by(foreign)}
+        . {stata scatter price? weight, ytitle(Price)}
+
+{marker lpattern}{...}
+{dlgtab:lpattern}
+
+{p 8 15 2}
+    {cmd:grstyle set} {opt lp:attern} [{it:palette}]
+        [,  {opt p:lots(numlist)}
+            {help linepalette##opts:{it:palette_options}} ]
+        [ {cmd::} {it:elements} ]
+
+{pstd}
+    Assign line patterns (using the {cmd:linepattern} scheme entry attribute). {it:palette} is a
+    {help linepalette##palette:line pattern palette} provided by {helpb linepalette}
+    or a list of patterns according to {it:{help linepatternstyle}}. The default
+    palette uses the same line patterns as official Stata's monochrome
+    schemes. Options are as follows:
+
+{phang}
+    {opt plots(numlist)} specifies the plot numbers for
+    {help grstyle_set##numbered:numbered elements}.
+
+{phang}
+    {it:palette_options} are palette options such as {cmd:n()} to set the palette size,
+    {cmd:select()} to select elements from a palette, or {cmd:reverse} to use
+    the palette in reverse order. See {helpb linepalette##opts:linepalette}
+    for details.
+
+{pstd}
+    {it:elements} is a space-separated list of scheme entry elements to be
+    set (see {help scheme entries}). The default is {cmd:p} if {it:palette}
+    only contains a single element and {cmd:plots()} is omitted. Otherwise,
+    the default is {cmd:p#}. Some possible elements are:
+
+
+{p2colset 11 30 32 2}{...}
+{p2coldent:{help grstyle_set##numbered:Numbered elements}}{p_end}
+{p2col:{cmd:p#}}line patterns for all plot types; the default{p_end}
+{p2col:{cmd:p#lineplot}}line patterns for line plots{p_end}
+{p2col:{cmd:p#line}}line patterns for connected-line plots{p_end}
+
+{p2coldent:Other elements}{p_end}
+{p2col:{cmd:major_grid}}line pattern for grid lines{p_end}
+{p2col:{cmd:xyline}}line pattern for added lines{p_end}
+{p2col:{cmd:refline}}line pattern for reference lines{p_end}
+{p2col:{cmd:ci_area}}line pattern for confidence intervals{p_end}
+
+{pstd}
+    Example:
+
+        . {stata grstyle init}
+        . {stata grstyle linewidth plineplot medthick}
+        . {stata grstyle set lpattern}
+        . {stata sysuse uslifeexp, clear}
+        . {stata line le_wfemale le_wmale le_bfemale le_bmale year}
+
+{marker graphsize}{...}
+{dlgtab:graphsize}
+
+{p 8 15 2}
+    {cmd:grstyle set} {opt graphsize} [{it:height} [{it:width}]]
+
+{pstd}
+    Set the size of the graph. Units for {it:height} and
+    {it:width} may be {cmdab:in:ch} (inches; the default), {cmd:pt} (points; 1 inch =
+    72 points), {cmd:cm} (centimeters; 1 inch = 2.54 centimeters), or {cmd:mm}
+    (millimeters; 1 inch = 25.4 millimeters). The default height is 4 inches, the default width
+    is 5.5 inches.
+
+{pstd}
+    Examples:
+
+        . {stata grstyle init}
+        . {stata grstyle set graphsize 4 3}
+        . {stata sysuse auto, clear}
+        . {stata scatter price weight}
+
+        {com}. {stata grstyle init}
+        . {stata grstyle set graphsize 10cm 12cm}{txt}
+        . {stata sysuse auto, clear}
+        . {stata scatter price weight}
+
+{pstd}
+    Apart from creating scheme entries for the graph size,
+    {cmd:grstyle set graphsize} stores the reference size for translations of
+    {help grstyle_set##abssize:absolute sizes} to relative sizes in global
+    macro {cmd:GRSTYLE_RSIZE} (the reference size is the minimum of height and
+    width of the graph in inches). This information will be used by
+    {helpb grstyle_set##size:grstyle set size},
+    {helpb grstyle_set##symbolsize:grstyle set symbolsize},
+    {helpb grstyle_set##linewidth:grstyle set linewidth}, and
+    {helpb grstyle_set##margin:grstyle set margin}.
+
+{marker size}{...}
+{dlgtab:size}
+
+{p 8 15 2}
+    {cmd:grstyle set} {opt size} {it:sizelist}
+        [, {opt pt} {opt mm} {opt in:ch} {opt cm} {opt p:lots(numlist)} ]
+        [ {cmd::} {it:elements} ]
+
+{pstd}
+    Set size of text objects and gaps (using the {cmd:gsize} scheme entry
+    attribute). {it:sizelist} is a space-separated list of
+    {help grstyle_set##abssize:absolute sizes} ({cmd:pt}, {cmd:mm},
+    {cmdab:in:ch}, or {cmd:cm}; see
+    {help grstyle_set##abssize:Setting absolute sizes} below) or size
+    specifications according to {it:{help textsizestyle}} (excluding
+    multiplication syntax). Options are as follows:
+
+{phang}
+    {opt pt}, {opt mm}, {opt inch}, and {opt cm} determine how numbers without
+    units in {it:sizelist} will be interpreted. The default is to interpret
+    them as relative sizes and pass them through to the scheme file as is.
+    Alternatively, specify {opt pt}, {opt mm}, {opt inch}, or {opt cm} to
+    interpret them as {help grstyle_set##abssize:absolute sizes}.
+
+{phang}
+    {opt plots(numlist)} specifies the plot numbers for
+    {help grstyle_set##numbered:numbered elements}.
+
+{pstd}
+    {it:elements} is a space-separated list of scheme entry elements to be
+    set (see {help scheme entries}). Some possible elements are:
+
+{p2colset 11 30 32 2}{...}
+{p2coldent:{help grstyle_set##numbered:Numbered elements}}{p_end}
+{p2col:{cmd:p#label}}text size of marker labels for all plot types{p_end}
+{p2col:{cmd:p#boxlabel}}text size of labels on outside value markers for box plots{p_end}
+
+{p2coldent:Other plot elements}{p_end}
+{p2col:{cmd:label_gap}}distance between markers and their labels{p_end}
+{p2col:{cmd:pielabel_gap}}distance of pie labels from center of pie{p_end}
+{p2col:{cmd:pie_explode}}distance to explode pie slices{p_end}
+{p2col:{cmd:barlabel_gap}}added distance between bars and their labels for {helpb graph bar}{p_end}
+{p2col:{cmd:matrix_label}}size of diagonal titles for {helpb graph matrix}{p_end}
+{p2col:{cmd:matrix_marklbl}}size of marker labels for {helpb graph matrix}{p_end}
+{p2col:{cmd:matrix_mlblgap}}gap between marker and label for {helpb graph matrix}{p_end}
+
+{p2coldent:General elements}{p_end}
+{p2col:{cmd:heading}}size of title{p_end}
+{p2col:{cmd:subheading}}size of subtitle{p_end}
+{p2col:{cmd:body}}size of caption{p_end}
+{p2col:{cmd:small_body}}size of note{p_end}
+{p2col:{cmd:text_option}}size of added text{p_end}
+{p2col:{cmd:axis_title}}size of axis titles{p_end}
+{p2col:{cmd:axis_title_gap}}gap between tick labels and axis titles{p_end}
+{p2col:{cmd:tick_label}}size of major tick labels{p_end}
+{p2col:{cmd:tick}}length of major ticks{p_end}
+{p2col:{cmd:minortick_label}}size of minor tick labels{p_end}
+{p2col:{cmd:minortick}}length of minor ticks{p_end}
+{p2col:{cmd:tickgap}}gap between ticks and labels{p_end}
+{p2col:{cmd:key_label}}size of labels in legend{p_end}
+{p2col:{cmd:legend_row_gap}}gap between legend rows {p_end}
+{p2col:{cmd:legend_col_gap}}gap between legend columns{p_end}
+{p2col:{cmd:legend_key_gap}}gap between key and label in legend{p_end}
+{p2col:{cmd:legend_key_xsize}}length of keys {p_end}
+{p2col:{cmd:legend_key_ysize}}height of keys{p_end}
+
+{pstd}
+    Example:
+
+        . {stata grstyle init}
+        . {stata grstyle set graphsize 7cm 9cm}
+        . {stata "grstyle set size 10pt: heading"}
+        . {stata "grstyle set size 8pt: subheading axis_title"}
+        . {stata sysuse auto, clear}
+{p 8 10 2}
+        . {stata scatter price weight, title("Title (10pt)") subtitle("Subtitle (8pt)") xtitle("X axis title (8pt)") ytitle("Y axis title (8pt)")}
+{p_end}
+
+{marker symbolsize}{...}
+{dlgtab:symbolsize}
+
+{p 8 15 2}
+    {cmd:grstyle set} {opt symbolsize} {it:sizelist}
+        [, {opt pt} {opt mm} {opt in:ch} {opt cm} {opt p:lots(numlist)} ]
+        [ {cmd::} {it:elements} ]
+
+{pstd}
+    Set size of symbols (using the {cmd:symbolsize} scheme entry
+    attribute). {it:sizelist} is a space-separated list of
+    {help grstyle_set##abssize:absolute sizes} ({cmd:pt}, {cmd:mm},
+    {cmdab:in:ch}, or {cmd:cm}; see
+    {help grstyle_set##abssize:Setting absolute sizes} below) or size
+    specifications according to {it:{help markersizestyle}} (excluding
+    multiplication syntax). Options are as follows:
+
+{phang}
+    {opt pt}, {opt mm}, {opt inch}, and {opt cm} determine how numbers without
+    units in {it:sizelist} will be interpreted. The default is to interpret
+    them as relative sizes and pass them through to the scheme file as is.
+    Alternatively, specify {opt pt}, {opt mm}, {opt inch}, or {opt cm} to
+    interpret them as {help grstyle_set##abssize:absolute sizes}.
+
+{phang}
+    {opt plots(numlist)} specifies the plot numbers for
+    {help grstyle_set##numbered:numbered elements}.
+
+{pstd}
+    {it:elements} is a space-separated list of scheme entry elements to be
+    set (see {help scheme entries}). The default is {cmd:p} if {it:sizelist}
+    only contains a single element and {cmd:plots()} is omitted. Otherwise,
+    the default is {cmd:p#}. Some possible elements are:
+
+{p2colset 11 30 32 2}{...}
+{p2coldent:{help grstyle_set##numbered:Numbered elements}}{p_end}
+{p2col:{cmd:p#}}size of marker symbols for all plot types{p_end}
+{p2col:{cmd:p#box}}size of outside value markers for box plots{p_end}
+{p2col:{cmd:p#dot}}size of marker symbols for dot plots{p_end}
+
+{p2coldent:Other elements}{p_end}
+{p2col:{cmd:matrix}}size of marker symbol for {helpb graph matrix}{p_end}
+{p2col:{cmd:sunflower}}size of marker symbol for {helpb sunflower}{p_end}
+{p2col:{cmd:refmarker}}size of reference-marker symbol{p_end}
+
+{pstd}
+    Example:
+
+        . {stata grstyle init}
+        . {stata grstyle set legend 2}
+        . {stata grstyle set graphsize 7cm 9cm}
+        . {stata "grstyle set symbolsize 1 2 3 4 5, pt: p#"}
+        . {stata sysuse auto, clear}
+        . {stata separate price, by(rep) shortlabel}
+        . {stata scatter price? weight, ytitle(Price)}
+
+{marker linewidth}{...}
+{dlgtab:linewidth}
+
+{p 8 15 2}
+    {cmd:grstyle set} {opt linewidth} {it:sizelist}
+        [, {opt pt} {opt mm} {opt in:ch} {opt cm} {opt p:lots(numlist)} ]
+        [ {cmd::} {it:elements} ]
+
+{pstd}
+    Set width of lines (using the {cmd:linewidth} scheme entry attribute).
+    {it:sizelist} is a space-separated list of
+    {help grstyle_set##abssize:absolute sizes} ({cmd:pt}, {cmd:mm},
+    {cmdab:in:ch}, or {cmd:cm}; see
+    {help grstyle_set##abssize:Setting absolute sizes} below) or size
+    specifications according to {it:{help linewidthstyle}} (excluding
+    multiplication syntax). Options are as follows:
+
+{phang}
+    {opt pt}, {opt mm}, {opt inch}, and {opt cm} determine how numbers without
+    units in {it:sizelist} will be interpreted. The default is to interpret
+    them as relative sizes and pass them through to the scheme file as is.
+    Alternatively, specify {opt pt}, {opt mm}, {opt inch}, or {opt cm} to
+    interpret them as {help grstyle_set##abssize:absolute sizes}.
+
+{phang}
+    {opt plots(numlist)} specifies the plot numbers for
+    {help grstyle_set##numbered:numbered elements}.
+
+{pstd}
+    {it:elements} is a space-separated list of scheme entry elements to be
+    set (see {help scheme entries}). The default is {cmd:p} if {it:sizelist}
+    only contains a single element and {cmd:plots()} is omitted. Otherwise,
+    the default is {cmd:p#}. Some possible elements are:
+
+{p2colset 11 30 32 2}{...}
+{p2coldent:{help grstyle_set##numbered:Numbered elements}}{p_end}
+{p2col:{cmd:p#}}line thickness for all plot types{p_end}
+{p2col:{cmd:p#mark}}outline thickness of markers{p_end}
+{p2col:{cmd:p#lineplot}}line thickness for line plots{p_end}
+{p2col:{cmd:p#area}}outline thickness for area plots{p_end}
+{p2col:{cmd:p#bar}}outline thickness for bar plots{p_end}
+{p2col:{cmd:p#box}}outline thickness for box plots{p_end}
+{p2col:{cmd:p#boxmark}}outline thickness of outside value markers in box plots{p_end}
+{p2col:{cmd:p#dotmark}}marker outline thickness for dot plots{p_end}
+
+{p2coldent:Other plot elements}{p_end}
+{p2col:{cmd:pie}}outline thickness of pie slices{p_end}
+{p2col:{cmd:histogram}}histogram bar outline thickness{p_end}
+{p2col:{cmd:sunflower}}sunflower petal thickness{p_end}
+{p2col:{cmd:matrixmark}}marker outline thickness for {helpb graph matrix}{p_end}
+{p2col:{cmd:ci_area}}line thickness for {cmd:ci}{p_end}
+{p2col:{cmd:ci2_area}}line thickness for {cmd:ci2}{p_end}
+{p2col:{cmd:refline}}reference-line thickness{p_end}
+{p2col:{cmd:refmarker}}reference-marker outline thickness{p_end}
+
+{p2coldent:General elements}{p_end}
+{p2col:{cmd:plotregion}}thickness of plot region outline, if drawn{p_end}
+{p2col:{cmd:matrix_plotregion}}plotregion outline thickness for {helpb graph matrix}{p_end}
+{p2col:{cmd:axisline}}thickness of axis lines{p_end}
+{p2col:{cmd:major_grid}}thickness of grid lines{p_end}
+{p2col:{cmd:tick}}line thickness of major ticks{p_end}
+{p2col:{cmd:minortick}}line thickness of minor ticks{p_end}
+{p2col:{cmd:legend}}legend outline thickness, if drawn{p_end}
+{p2col:{cmd:xyline}}thickness added lines{p_end}
+{p2col:{cmd:text_option}}thickness box outline of added text, if drawn{p_end}
+
+{pstd}
+    Example:
+
+        . {stata grstyle init}
+        . {stata grstyle set graphsize 4 5.5}
+        . {stata "grstyle set linewidth 2pt: axisline tick major_grid legend xyline"}
+        . {stata "grstyle set linewidth 4pt: plineplot"}
+        . {stata sysuse auto, clear}
+        . {stata two (scatter price weight) (lpoly price weight), xline(4000)}
+
+{marker margin}{...}
+{dlgtab:margin}
+
+{p 8 15 2}
+    {cmd:grstyle set} {opt margin} {it:sizelist}
+        [, {opt pt} {opt mm} {opt in:ch} {opt cm} {opt p:lots(numlist)} ]
+        [ {cmd::} {it:elements} ]
+
+{pstd}
+    Set size of margins (using the {cmd:margin} scheme entry
+    attribute). {it:sizelist} is a space-separated list of
+    {help grstyle_set##abssize:absolute sizes} ({cmd:pt}, {cmd:mm},
+    {cmdab:in:ch}, or {cmd:cm}; see
+    {help grstyle_set##abssize:Setting absolute sizes} below) or
+    size specifications according to {it:{help marginstyle}} (excluding
+    {it:marginexp}). A numeric element in {it:sizelist} can be a single number,
+    in which case the same margin will be used on all four sides, or a set of
+    numbers enclosed in double quotes according to the following order:
+
+        {cmd:"}{it:left} {it:right} {it:bottom} {it:top}{cmd:"}
+
+{pstd}
+    For example, type {cmd:"5pt 2pt 0pt 10pt"} to use 5 points on the left, 2
+    points on the right, zero points at the bottom, and 10 points at the top.
+    If the set contains less than four numbers, the last number will be
+    repeated. For example, {cmd:"5pt 2pt"} will be interpreted as
+    {cmd:"5pt 2pt 2pt 2pt"}. Options are as follows:
+
+{phang}
+    {opt pt}, {opt mm}, {opt inch}, and {opt cm} determine how numbers without
+    units in {it:sizelist} will be interpreted. The default is to interpret
+    them as relative sizes and pass them through to the scheme file as is.
+    Alternatively, specify {opt pt}, {opt mm}, {opt inch}, or {opt cm} to
+    interpret them as {help grstyle_set##abssize:absolute sizes}.
+
+{phang}
+    {opt plots(numlist)} specifies the plot numbers for
+    {help grstyle_set##numbered:numbered elements}.
+
+{pstd}
+    {it:elements} is a space-separated list of scheme entry elements to be
+    set (see {help scheme entries}). The default is {cmd:graph}. Some possible
+    elements are:
+
+{p2colset 9 30 32 2}{...}
+{p2col:{cmd:graph}}margin around graph; the default{p_end}
+{p2col:{cmd:twoway}}plot region margin for twoway graphs{p_end}
+{p2col:{cmd:bygraph}}margin around combined subgraphs for {helpb by_option:by()}{p_end}
+{p2col:{cmd:by_indiv}}margin around individual subgraphs for {helpb by_option:by()}{p_end}
+{p2col:{cmd:combinegraph}}margin around combined graphs for {helpb graph combine}{p_end}
+{p2col:{cmd:heading}}margin around title{p_end}
+{p2col:{cmd:subheading}}margin around subtitle{p_end}
+{p2col:{cmd:body}}margin around caption{p_end}
+{p2col:{cmd:small_body}}margin around note{p_end}
+{p2col:{cmd:axis_title}}margin around axis titles{p_end}
+{p2col:{cmd:legend}}margin around legend: inside the legend box{p_end}
+{p2col:{cmd:legend_boxmargin}}margin around legend: outside the legend box{p_end}
+{p2col:{cmd:text_option}}margin around added text, if box is drawn{p_end}
+
+{pstd}
+    Example:
+
+        . {stata grstyle init}
+        . {stata grstyle set graphsize 4 5.5}
+        . {stata `"grstyle set margin "5pt 15pt 5pt 5pt": graph"'}
+        . {stata sysuse auto, clear}
+        . {stata scatter price weight, title(Scatterplot)}
+
+{marker myname}{...}
+{dlgtab:myname}
+
+{pstd}
+    A personal collection of graph settings can be provided by defining a program called
+    {cmd:grstyle_set_}{it:myname}. {it:myname} will then be available to
+    {cmd:grstyle set} like any other subcommand.
+
+{pstd}
+    When calling your program, {cmd:grstyle set} provides global macro
+    {cmd:GRSTYLE_FH} containing the file handle of the scheme file to be
+    written to. Use {helpb file:file write} with this handle to add
+    your scheme entries. For example, the following program would set the
+    default approximate number of labeled ticks to 10 (and print y-labels
+    horizontally):
+
+        {com}program grstyle_set_myticks
+            file write $GRSTYLE_FH "numticks_g horizontal_major 10" _n
+            file write $GRSTYLE_FH "numticks_g vertical_major   10" _n
+            file write $GRSTYLE_FH "anglestyle vertical_tick horizontal" _n
+        end{txt}
+
+{pstd}
+    After defining the program (or storing the program in file
+    {cmd:grstyle_set_myticks.ado}), it can be used as follows:
+
+        {com}. grstyle init
+        . grstyle set myticks
+        . sysuse auto
+        . scatter price weight{txt}
+
+{pstd}
+    Your program can also have options. Here is an extended
+    example with an option for the approximate number of labeled ticks and an
+    additional option to set the number of unlabeled minor ticks between the labeled
+    ticks:
+
+        {com}program grstyle_set_myticks
+            syntax [, n(int 5) mticks(int 0) ]
+            file write $GRSTYLE_FH "numticks_g horizontal_major `n'" _n
+            file write $GRSTYLE_FH "numticks_g vertical_major   `n'" _n
+            file write $GRSTYLE_FH "anglestyle vertical_tick horizontal" _n
+            file write $GRSTYLE_FH "numticks_g horizontal_tminor `mticks'" _n
+            file write $GRSTYLE_FH "numticks_g vertical_tminor   `mticks'" _n
+        end{txt}
+
+{pstd}
+    You could then type
+
+        {com}. grstyle init
+        . grstyle set myticks, n(10) mticks(5)
+        . sysuse auto
+        . scatter price weight{txt}
+
+
+{marker remarks}{...}
+{title:Remarks}
+
+{marker colorspec}{...}
+{dlgtab:Specifying colors}
+
+{pstd}
+    When providing a list of colors to {helpb grstyle_set##color:grstyle set color}
+    or {helpb grstyle_set##ci:grstyle set ci}, use color specifications according to
+    {help colorstyle##colorstyle:{it:colorstyle}} (named colors;
+    RBG colors specified as {cmd:"}{it:# # #}{cmd:"};
+    CMYK colors specified as {cmd:"}{it:# # # #}{cmd:"};
+    or HSV colors specified as {cmd:"hsv} {it:# # #}{cmd:"}). Example:
+
+        {com}. grstyle set color cranberry dkgreen gold navy{txt}
+
+{pstd}
+    Same colors using RGB codes:
+
+        {com}. grstyle set color "193 5 52" "0 96 0" "255 210 0" "26 71 111"{txt}
+
+{pstd}
+    It is also possible to specify RGB colors using their 6-digit hex codes
+    (or 3-digit abbreviations; see
+    {browse "http://en.wikipedia.org/wiki/Web_colors":en.wikipedia.org/wiki/Web_colors}
+    for background information; some websites providing collections of colors are
+    {browse "http://www.w3schools.com/colors/":www.w3schools.com/colors},
+    {browse "http://htmlcolorcodes.com/":htmlcolorcodes.com}, or
+    {browse "http://www.color-hex.com/":www.color-hex.com}). Start the color specification
+    with a hash in this case. The hex codes will be translated to RGB. Example:
+
+        {com}. grstyle set color #30C #11eedd #FFC0CB #f1e2ab{txt}
+
+{pstd}
+    Furthermore, HCL colors can be provided as
+    {cmd:"hcl} {it:# # #}{cmd:"}, where the first number specifies the hue
+    (dominant wavelength in degrees of the 360 degree color wheel), the second
+    number specifies the chroma (colorfulness, color intensity; # >= 0) and the
+    third number specifies the luminance (brightness, amount of gray; # in [0,
+    100]). HCL colors will be translated to RGB. Example:
+
+        {com}. grstyle set color "hcl 0 100 70" "hcl 120 100 70" "hcl 240 100 70"{txt}
+
+{pstd}
+    If using Stata 14.2 or newer, many more input formats are supported, including 
+    named web colors and color values in various color spaces. See 
+    {helpb colorpalette##colorlist:colorpalette} for details.
+
+{pstd}
+    Color intensity adjustment may be requested by adding adjustment factor
+    {cmd:*}{it:#} to a color. Example (original navy and navy with 70%
+    intensity in 3 different ways):
+
+        {com}. grstyle set color navy navy*.7 "26 71 111*.7" #1a476f*.7{txt}
+
+{pstd}
+    Furthermore, since Stata 15, colors may be complemented by opacity specified as
+    {cmd:%}{it:#}. Example (original navy and navy with 80% opacity in 3 different ways):
+
+        {com}. grstyle set color navy navy%80 "26 71 111%80" #1a476f%80{txt}
+
+{pstd}
+    Intensity and opacity can be combined:
+
+        {com}. grstyle set color navy navy*.7 navy%80 navy*.7%80{txt}
+
+{marker numbered}{...}
+{dlgtab:Numbered scheme entry elements}
+
+{pstd}
+    Some of the above commands support the specification of numbered scheme
+    entry elements using shorthand notation {cmd:p#}[{it:stub}]. Examples are
+    {cmd:p#}, {cmd:p#line}, or {cmd:p#label}. Such syntax will be expanded to a
+    set of numbered elements ({cmd:p1}{it:stub}, {cmd:p2}{it:stub}, etc.) using the
+    numbers provided by the {cmd:plots()} option or, if {cmd:plots()} is
+    omitted, using numbers 1 to {it:n}, where {it:n} is the number of attribute
+    values (colors, line patterns, sizes, etc.) provided to the command. The
+    values will be assigned one by one to the expanded elements (recycling the
+    list of attribute values if necessary). Each set is treated separately, that is,
+    assignment of attribute values starts over with the first value for
+    each set.
+
+{pstd}
+    Of course, you can also specify numbered elements directly as
+    {cmd:p1}{it:stub}, {cmd:p2}{it:stub}, etc. They will then be treated like
+    any other (unnumbered) element. All specified elements that do not use the
+    above shorthand notation are taken together as an additional set of
+    elements. That is, attribute values will be assigned one by one, in the order
+    in which the elements have been specified, starting with the first value
+    in the provided list of attribute values.
+
+{pstd}
+    Finally, note that numbered elements always also have an unnumbered form,
+    {cmd:p}[{it:stub}], that can be used to set the default for all plots. For
+    example, to use the same style for marker labels in all plots you can
+    simply set {cmd:plabel} instead of {cmd:p1label}, {cmd:p2label}, etc.
+    However, note that numbered elements will take precedence over unnumbered
+    elements. That is, if, say, {cmd:p3label} has been set, setting
+    {cmd:plabel} will have no effect on marker labels in the 3rd plot.
+
+{marker abssize}{...}
+{dlgtab:Setting absolute sizes}
+
+{pstd}
+    Commands {helpb grstyle_set##size:grstyle set size},
+    {helpb grstyle_set##symbolsize:grstyle set symbolsize},
+    {helpb grstyle_set##linewidth:grstyle set linewidth}, and
+    {helpb grstyle_set##margin:grstyle set margin} allow the specification of
+    absolute sizes as {it:#}{cmd:pt} ({it:#} points; 1 inch = 72 points),
+    {it:#}{cmd:mm} ({it:#} millimeters; 1 inch = 25.4 millimeters),
+    {it:#}{cmdab:in:ch} ({it:#} inches), or {it:#}{cmd:cm} ({it:#} centimeters; 1
+    inch = 2.54 centimeters).
+
+{pstd}
+    Absolute sizes are specific to the chosen graph size. They are
+    translated to relative sizes based on the reference size set by
+    {helpb grstyle_set##graphsize:grstyle set graphsize} (or a reference size
+    of 4 inches if the graph size has not been set). Since absolute sizes are
+    implemented in terms of relative sizes with respect to a particular graph
+    size, the requested absolute sizes will only be preserved as long as the
+    graph size (or the minimum of height and width of the graph, to be precise)
+    does not change.
+
+
+{marker author}{...}
+{title:Author}
+
+{pstd}
+    Ben Jann, University of Bern, ben.jann@soz.unibe.ch
+
+{pstd}
+    Thanks for citing this software as
+
+{pmore}
+    Jann, B. (2018a). {browse "https://www.stata-journal.com/article.html?article=gr0073":Customizing Stata graphs made easy (part 1)}. The 
+    Stata Journal 18(3): 491-502.
+    {p_end}
+{pmore}
+    Jann, B. (2018b). {browse "https://www.stata-journal.com/article.html?article=gr0073_1":Customizing Stata graphs made easy (part 2)}. The 
+    Stata Journal 18(4): 786–802.
+    {p_end}
+
+{pstd}
+    or
+
+{pmore}
+    Jann, B. (2017). grstyle: Stata module to customize the overall look of
+    graphs. Available from
+    {browse "http://ideas.repec.org/c/boc/bocode/s458414.html"}.
+
+
+{marker alsosee}{...}
+{title:Also see}
+
+{psee}
+    Online:  help for {helpb grstyle}, {helpb colorpalette}, {helpb colorpalette9}, 
+    {helpb symbolpalette}, {helpb linepalette}, {helpb graph}, {helpb schemes}, {help scheme files},
+    {help scheme entries}
+
