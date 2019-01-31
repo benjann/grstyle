@@ -22,4 +22,7 @@ and add the files to your system manually
 (see file readme.txt within `grstyle.zip` or `palettes.zip` for installation instructions). 
 
 Stata version 9.2 or newer is required. Some features may require newer Stata 
-versions. 
+versions.
+
+Online documentation of `grstyle` can be found at
+[repec.sowi.unibe.ch/stata/grstyle](http://repec.sowi.unibe.ch/stata/grstyle/).
