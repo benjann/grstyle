@@ -1,5 +1,5 @@
 {smcl}
-{* 18jun2018}{...}
+{* 14may2020}{...}
 {hi:help grstyle set}{...}
 {right:{browse "http://repec.sowi.unibe.ch/stata/grstyle"}}
 {hline}
@@ -475,7 +475,7 @@
         . {stata sysuse nlsw88, clear}
         . {stata graph bar wage if occ<9, over(occ) asyvars over(union)}
 
-        . {stata grstyle set color ptol, rainbow n(8) reverse}
+        . {stata grstyle set color ptol rainbow, n(8) reverse}
         . {stata graph bar wage if occ<9, over(occ) asyvars over(union)}
 
         . {stata grstyle set color Greens, n(8)}
