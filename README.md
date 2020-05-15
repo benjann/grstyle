@@ -35,9 +35,12 @@ Installation from GitHub:
 
 Main changes:
 
+    14may2020
+    - minor changes to helpfile due to new colorpalette version
+
     17apr2020
     - installation files added to GitHub distribution
-    
+
     30jan2019
     - command -grstyle set color- now calls command -colorpalette9- instead of 
       -colorpalette- if used in a Stata version older than 14.2

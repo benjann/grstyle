@@ -2,6 +2,7 @@
 {* 14may2020}{...}
 {hi:help grstyle set}{...}
 {right:{browse "http://repec.sowi.unibe.ch/stata/grstyle"}}
+{right:{browse "http://github.com/benjann/grstyle/"}}
 {hline}
 
 {title:Title}
