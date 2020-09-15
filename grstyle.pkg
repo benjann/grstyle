@@ -3,7 +3,7 @@ d grstyle: module to customize the overall look of graphs
 d 
 d Author: Ben Jann, University of Bern, ben.jann@soz.unibe.ch
 d
-d Distribution-Date: 20200515
+d Distribution-Date: 20200915
 f grstyle_set.ado
 f grstyle_set.hlp
 f grstyle.ado

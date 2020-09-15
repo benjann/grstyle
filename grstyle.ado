@@ -1,4 +1,4 @@
-*! version 1.1.0  22dec2017  Ben Jann
+*! version 1.1.1  15sep2020  Ben Jann
 
 program grstyle
     version 9.2
@@ -42,8 +42,15 @@ program grstyle_init
         }
         local handle _GRSTYLE_
         if `"`c(scheme)'"'==`"`handle'"' {
-            di as err "somethings is wrong; scheme _GRSTYLE_ already active"
-            exit 499
+            di as txt"Scheme {bf:`handle'} already active although {bf:grstyle}"/*
+                */ " is not running"
+            di as txt "Press any key to reset default scheme to {bf:s2color}"/*
+                */ " and overwrite scheme {bf:`handle'}, or Break to abort"
+            more
+            set scheme s2color, permanently
+                // using option -permanently- to make sure that restarting
+                // Stata will not bring scheme _GRSTYLE_ back
+            _grstyle_refresh
         }
         local path `"`c(sysdir_personal)'"'
         mata: grstyle_mkdir(st_local("path"))
