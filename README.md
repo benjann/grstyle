@@ -35,6 +35,12 @@ Installation from GitHub:
 
 Main changes:
 
+    15sep2020:
+    - grstyle returned error if scheme _GRSTYLE_ was already active although grstyle
+      was not running (for example, because scheme _GRSTYLE_ has been manually
+      selected in the Graph preferences dialog); grtyle now resets the default
+      scheme to s2color in such a case, unless the user hits Break
+
     14may2020
     - minor changes to helpfile due to new colorpalette version
 
